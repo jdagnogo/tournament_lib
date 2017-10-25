@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="TournamentView">
+        <attr name="main_bg_color" format="color"/>
+    </declare-styleable>
+</resources>

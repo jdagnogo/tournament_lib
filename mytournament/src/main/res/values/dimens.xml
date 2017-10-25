@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="default_space">16dp</dimen>
+    <dimen name="space_confrontation">25dp</dimen>
+    <dimen name="space_between_round">100dp</dimen>
+    <dimen name="separator_hori">50dp</dimen>
+    <dimen name="separator_hori_half">25dp</dimen>
+</resources>

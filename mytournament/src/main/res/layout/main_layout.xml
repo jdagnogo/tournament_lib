@@ -240,6 +240,7 @@
                     android:id="@+id/final_card_1_textview_score"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:inputType="number"
                     android:hint="\?" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -272,6 +273,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/final_card_2_textview_score"
                     android:gravity="center"
+                    android:inputType="number"
                     android:hint="\?" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -325,6 +327,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/winner_textview"
                     android:gravity="center"
                     android:text="Winner" />
 

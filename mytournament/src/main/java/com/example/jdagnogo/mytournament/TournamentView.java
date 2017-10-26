@@ -3,6 +3,8 @@ package com.example.jdagnogo.mytournament;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.jdagnogo.mytournament.model.BinderTeamTextView;
 import com.example.jdagnogo.mytournament.model.MatchResult;
+import com.example.jdagnogo.mytournament.model.Team;
 import com.example.jdagnogo.mytournament.model.Tournament;
 
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
-public class TournamentView extends LinearLayout implements View.OnClickListener {
+public class TournamentView extends LinearLayout {
     /*
     All Views
      */
@@ -31,6 +34,7 @@ public class TournamentView extends LinearLayout implements View.OnClickListener
     EditText semiACard1TextviewScore, semiACard2TextviewScore, semiBCard1TextviewScore, semiBCard2TextviewScore;
     //final names
     TextView finalCard1Textview, finalCard2Textview;
+    TextView winnerTextView;
     //final score
     EditText finalCard1TextviewScore, finalCard2TextviewScore;
 
@@ -44,7 +48,7 @@ public class TournamentView extends LinearLayout implements View.OnClickListener
     private List<TextView> semiTextViewsScore;
     private List<TextView> finalTextViewsScore;
     private HashMap<Integer, BinderTeamTextView> binderSemi;
-
+    private HashMap<Integer, BinderTeamTextView> binderfinal;
     private Context context;
 
     public TournamentView(Context context, @Nullable AttributeSet attrs) {
@@ -65,17 +69,23 @@ public class TournamentView extends LinearLayout implements View.OnClickListener
         semiBCard2Textview = (TextView) rootView.findViewById(R.id.semi_b_card_2_textview);
 
         semiACard1TextviewScore = (EditText) rootView.findViewById(R.id.semi_a_card_1_textview_score);
+        semiACard1TextviewScore.addTextChangedListener(watcherSemi1);
         semiACard2TextviewScore = (EditText) rootView.findViewById(R.id.semi_a_card_2_textview_score);
+        semiACard2TextviewScore.addTextChangedListener(watcherSemi1);
         semiBCard1TextviewScore = (EditText) rootView.findViewById(R.id.semi_b_card_1_textview_score);
+        semiBCard1TextviewScore.addTextChangedListener(watcherSemi2);
         semiBCard2TextviewScore = (EditText) rootView.findViewById(R.id.semi_b_card_2_textview_score);
+        semiBCard2TextviewScore.addTextChangedListener(watcherSemi2);
 
         finalCard1Textview = (TextView) rootView.findViewById(R.id.final_card_1_textview);
-        finalCard1Textview.setOnClickListener(this);
         finalCard2Textview = (TextView) rootView.findViewById(R.id.final_card_2_textview);
-        finalCard2Textview.setOnClickListener(this);
+
+        winnerTextView = (TextView) rootView.findViewById(R.id.winner_textview);
 
         finalCard1TextviewScore = (EditText) rootView.findViewById(R.id.final_card_1_textview_score);
+        finalCard1TextviewScore.addTextChangedListener(watcherfinal);
         finalCard2TextviewScore = (EditText) rootView.findViewById(R.id.final_card_2_textview_score);
+        finalCard2TextviewScore.addTextChangedListener(watcherfinal);
 
         // semi names
         semiTextViews = new ArrayList<>();
@@ -106,6 +116,7 @@ public class TournamentView extends LinearLayout implements View.OnClickListener
 
     public void startTournament() {
         binderSemi = new HashMap<>();
+        binderfinal = new HashMap<>();
         if (null != tournament) {
             // init binder team <=> textviews semi final and set team name's
             for (int i = 0; i < tournament.getTeams().size(); i++) {
@@ -117,6 +128,7 @@ public class TournamentView extends LinearLayout implements View.OnClickListener
 
         }
     }
+
 
     public void setupLayout(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
@@ -150,30 +162,93 @@ public class TournamentView extends LinearLayout implements View.OnClickListener
         loser.getTextViewName().setBackgroundColor(context.getResources().getColor(R.color.loser));
     }
 
-    private void updateScore(BinderTeamTextView semi1, BinderTeamTextView semi2, TextView textView) {
-        if (!semi1.getTextViewScore().getText().toString().isEmpty() && !semi2.getTextViewScore().getText().toString().isEmpty()) {
-            MatchResult matchResult = new MatchResult.MatchResultBuilder(semi1.getTeam(), semi2.getTeam())
-                    .scoreA(Integer.valueOf(semi1.getTextViewScore().getText().toString()))
-                    .scoreB(Integer.valueOf(semi2.getTextViewScore().getText().toString()))
-                    .build();
-            if (matchResult.getWinner().equals(semi1.getTeam())) {
-                setColorsBgForLoserAndWinner(semi1, semi2);
-            } else {
-                setColorsBgForLoserAndWinner(semi2, semi1);
+    private Team updateScoreandGetWinner(BinderTeamTextView semi1, BinderTeamTextView semi2) {
+        if (null != semi1 && null != semi2) {
+            if (!semi1.getTextViewScore().getText().toString().isEmpty() && !semi2.getTextViewScore().getText().toString().isEmpty()) {
+                MatchResult matchResult = new MatchResult.MatchResultBuilder(semi1.getTeam(), semi2.getTeam())
+                        .scoreA(Integer.valueOf(semi1.getTextViewScore().getText().toString()))
+                        .scoreB(Integer.valueOf(semi2.getTextViewScore().getText().toString()))
+                        .build();
+                if (matchResult.getWinner().equals(semi1.getTeam())) {
+                    setColorsBgForLoserAndWinner(semi1, semi2);
+                } else {
+                    setColorsBgForLoserAndWinner(semi2, semi1);
+                }
+
+                return matchResult.getWinner();
+
+
+            } else return null;
+        }
+        else return null;
+    }
+
+    private TextWatcher watcherSemi1 = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            Team team = updateScoreandGetWinner(binderSemi.get(0), binderSemi.get(1));
+            if (null != team) {
+                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard1Textview, finalCard1TextviewScore);
+                binderfinal.put(0, binderTeamTextView);
+                finalCard1Textview.setText(team.getName());
             }
-
-            textView.setText(matchResult.getWinner().getName());
+            updateFinal();
+        }
+    };
+    private TextWatcher watcherSemi2 = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
         }
-    }
 
-    @Override
-    public void onClick(View view) {
-        int id = view.getId();
-        if (id == R.id.final_card_1_textview) {
-            updateScore(binderSemi.get(0), binderSemi.get(1), finalCard1Textview);
-        } else if (id == R.id.final_card_2_textview) {
-            updateScore(binderSemi.get(2), binderSemi.get(3), finalCard2Textview);
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            Team team = updateScoreandGetWinner(binderSemi.get(2), binderSemi.get(3));
+            if (null != team) {
+                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard2Textview, finalCard2TextviewScore);
+                binderfinal.put(1, binderTeamTextView);
+                finalCard2Textview.setText(team.getName());
+            }
+            updateFinal();
+        }
+    };
+    private void updateFinal(){
+        Team team = updateScoreandGetWinner(binderfinal.get(0), binderfinal.get(1));
+        if (null != team) {
+            winnerTextView.setText(team.getName());
+            winnerTextView.setBackgroundColor(context.getResources().getColor(R.color.winner));
         }
     }
+    private TextWatcher watcherfinal = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+           updateFinal();
+        }
+    };
+
 }

@@ -7,9 +7,10 @@ public class BinderTeamTextView {
     private TextView textViewName;
     private TextView textViewScore;
 
-    public BinderTeamTextView(Team team, TextView textViewName) {
+    public BinderTeamTextView(Team team, TextView textViewName, TextView textViewScore) {
         this.team = team;
         this.textViewName = textViewName;
+        this.textViewScore = textViewScore;
     }
 
     public Team getTeam() {
@@ -28,4 +29,11 @@ public class BinderTeamTextView {
         this.textViewName = textViewName;
     }
 
+    public TextView getTextViewScore() {
+        return textViewScore;
+    }
+
+    public void setTextViewScore(TextView textViewScore) {
+        this.textViewScore = textViewScore;
+    }
 }

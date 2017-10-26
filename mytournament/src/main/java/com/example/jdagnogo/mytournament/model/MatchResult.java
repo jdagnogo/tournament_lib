@@ -17,9 +17,14 @@ public class MatchResult {
        this.scoreB = builder.scoreB;
 
    }
-   public Team getTheWinner(){
-       return null;
-   }
+    public Team getWinner(){
+        if (scoreA>scoreB){
+            teamB.setHasBeenEliminated(true);
+            return teamA;
+        }else {
+            return teamB;
+        }
+    }
 
     public static class MatchResultBuilder {
         private Team teamA;
@@ -31,6 +36,9 @@ public class MatchResult {
         public MatchResultBuilder(Team teamA, Team teamB) {
             this.teamA = teamA;
             this.teamB = teamB;
+            this.curentPosition = TournamentRound.Semi;
+            scoreA = 0;
+            scoreB = 0;
         }
 
         public MatchResultBuilder currentPosition(TournamentRound curentPosition) {
@@ -45,5 +53,9 @@ public class MatchResult {
             this.scoreB = scoreB;
             return this;
         }
+        public MatchResult build(){
+            return new MatchResult(this);
+        }
+
     }
 }

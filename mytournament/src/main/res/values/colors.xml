@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="separator_color">#c7c8c8</color>
+    <color name="winner">#45d428</color>
+    <color name="loser">#e21621</color>
 
 </resources>

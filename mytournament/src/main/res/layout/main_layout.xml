@@ -34,6 +34,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/semi_a_card_1_textview"
                     android:gravity="center"
                     android:text="team" />
 
@@ -64,6 +65,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/semi_a_card_2_textview"
+
                     android:gravity="center"
                     android:text="team" />
 
@@ -96,6 +99,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:id="@+id/semi_b_card_1_textview"
+
                     android:gravity="center"
                     android:text="team" />
 
@@ -124,7 +129,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/semi_b_card_2_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

@@ -8,6 +8,7 @@
 
     <com.example.jdagnogo.mytournament.TournamentView
         android:layout_width="match_parent"
+        android:id="@+id/tournament_view"
         android:layout_height="match_parent" />
 
 </LinearLayout>

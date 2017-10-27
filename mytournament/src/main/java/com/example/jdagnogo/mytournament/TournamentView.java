@@ -57,7 +57,6 @@ public class TournamentView extends LinearLayout {
         setupLayout(context);
         initViews();
         updateElementsAccordingToAttributs(context, attrs);
-
     }
 
     private void initViews() {
@@ -169,18 +168,18 @@ public class TournamentView extends LinearLayout {
                         .scoreA(Integer.valueOf(semi1.getTextViewScore().getText().toString()))
                         .scoreB(Integer.valueOf(semi2.getTextViewScore().getText().toString()))
                         .build();
-                if (matchResult.getWinner().equals(semi1.getTeam())) {
-                    setColorsBgForLoserAndWinner(semi1, semi2);
-                } else {
-                    setColorsBgForLoserAndWinner(semi2, semi1);
+                Team winner = matchResult.getWinner();
+                if (null!= winner){
+                    if (winner.equals(semi1.getTeam())) {
+                        setColorsBgForLoserAndWinner(semi1, semi2);
+                    } else {
+                        setColorsBgForLoserAndWinner(semi2, semi1);
+                    }
+                    return winner;
                 }
-
-                return matchResult.getWinner();
-
-
-            } else return null;
+            }
         }
-        else return null;
+        return null;
     }
 
     private TextWatcher watcherSemi1 = new TextWatcher() {

@@ -21,6 +21,8 @@ public class MatchResult {
         if (scoreA>scoreB){
             teamB.setHasBeenEliminated(true);
             return teamA;
+        }else if (scoreA == scoreB) {
+            return null;
         }else {
             return teamB;
         }

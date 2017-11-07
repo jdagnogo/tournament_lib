@@ -2,7 +2,9 @@ package com.example.jdagnogo.mytournament;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -30,11 +32,16 @@ public class TournamentView extends LinearLayout {
     LinearLayout mainLayout;
     //semi names
     TextView semiACard1Textview, semiACard2Textview, semiBCard1Textview, semiBCard2Textview;
+    CardView semiACard1,semiACard2,semiBCard1,semiBCard2;
+    View semiACard1Arrow1,semiACard1Arrow2,semiACard2Arrow1,semiACard2Arrow2,semiBCard1Arrow1,semiBCard1Arrow2,semiBCard2Arrow1,semiBCard2Arrow2;
     //semi score
     EditText semiACard1TextviewScore, semiACard2TextviewScore, semiBCard1TextviewScore, semiBCard2TextviewScore;
     //final names
     TextView finalCard1Textview, finalCard2Textview;
+    CardView finalCard1,finalCard2;
+    View winnerArrow0;
     TextView winnerTextView;
+    View finalCard1Arrow1,finalCard1Arrow0,finalCard1Arrow2,finalCard2Arrow1,finalCard2Arrow0,finalCard2Arrow2;
     //final score
     EditText finalCard1TextviewScore, finalCard2TextviewScore;
 
@@ -44,7 +51,9 @@ public class TournamentView extends LinearLayout {
      */
     private Tournament tournament;
     private List<TextView> semiTextViews;
+    private List<CardView> semiCards;
     private List<TextView> finalTextViews;
+    private List<CardView> finalCards;
     private List<TextView> semiTextViewsScore;
     private List<TextView> finalTextViewsScore;
     private HashMap<Integer, BinderTeamTextView> binderSemi;
@@ -67,6 +76,21 @@ public class TournamentView extends LinearLayout {
         semiBCard1Textview = (TextView) rootView.findViewById(R.id.semi_b_card_1_textview);
         semiBCard2Textview = (TextView) rootView.findViewById(R.id.semi_b_card_2_textview);
 
+        semiACard1Arrow1 = (View) rootView.findViewById(R.id.semi_a_card_1_arrow_1);
+        semiACard1Arrow2 = (View) rootView.findViewById(R.id.semi_a_card_1_arrow_2);
+        semiACard2Arrow1 = (View) rootView.findViewById(R.id.semi_a_card_2_arrow_1);
+        semiACard2Arrow2 = (View) rootView.findViewById(R.id.semi_a_card_2_arrow_2);
+
+        semiBCard1Arrow1 = (View) rootView.findViewById(R.id.semi_b_card_1_arrow_1);
+        semiBCard1Arrow2 = (View) rootView.findViewById(R.id.semi_b_card_1_arrow_2);
+        semiBCard2Arrow1 = (View) rootView.findViewById(R.id.semi_b_card_2_arrow_1);
+        semiBCard2Arrow2 = (View) rootView.findViewById(R.id.semi_b_card_2_arrow_2);
+
+        semiACard1 = (CardView) rootView.findViewById(R.id.semi_a_card_1);
+        semiACard2 = (CardView) rootView.findViewById(R.id.semi_a_card_2);
+        semiBCard1 = (CardView) rootView.findViewById(R.id.semi_b_card_1);
+        semiBCard2 = (CardView) rootView.findViewById(R.id.semi_b_card_2);
+
         semiACard1TextviewScore = (EditText) rootView.findViewById(R.id.semi_a_card_1_textview_score);
         semiACard1TextviewScore.addTextChangedListener(watcherSemi1);
         semiACard2TextviewScore = (EditText) rootView.findViewById(R.id.semi_a_card_2_textview_score);
@@ -78,6 +102,20 @@ public class TournamentView extends LinearLayout {
 
         finalCard1Textview = (TextView) rootView.findViewById(R.id.final_card_1_textview);
         finalCard2Textview = (TextView) rootView.findViewById(R.id.final_card_2_textview);
+
+        finalCard1Arrow0 = (View) rootView.findViewById(R.id.final_card_1_arrow_0);
+        finalCard1Arrow1 = (View) rootView.findViewById(R.id.final_card_1_arrow_1);
+        finalCard1Arrow2 = (View) rootView.findViewById(R.id.final_card_1_arrow_2);
+
+        finalCard2Arrow0 = (View) rootView.findViewById(R.id.final_card_2_arrow_0);
+        finalCard2Arrow1 = (View) rootView.findViewById(R.id.final_card_2_arrow_1);
+        finalCard2Arrow2 = (View) rootView.findViewById(R.id.final_card_2_arrow_2);
+
+        winnerArrow0 = (View) rootView.findViewById(R.id.winner_arrow_0);
+
+        finalCard1 = (CardView) rootView.findViewById(R.id.final_card_1);
+        finalCard2 = (CardView) rootView.findViewById(R.id.final_card_2);
+
 
         winnerTextView = (TextView) rootView.findViewById(R.id.winner_textview);
 
@@ -93,10 +131,22 @@ public class TournamentView extends LinearLayout {
         semiTextViews.add(semiBCard1Textview);
         semiTextViews.add(semiBCard2Textview);
 
+        // semi cards
+        semiCards = new ArrayList<>();
+        semiCards.add(semiACard1);
+        semiCards.add(semiACard2);
+        semiCards.add(semiBCard1);
+        semiCards.add(semiBCard2);
+
+
         // final names
         finalTextViews = new ArrayList<>();
         finalTextViews.add(finalCard1Textview);
         finalTextViews.add(finalCard2Textview);
+
+        finalCards = new ArrayList<>();
+        finalCards.add(finalCard1);
+        finalCards.add(finalCard2);
 
         // semi scnore
         semiTextViewsScore = new ArrayList<>();
@@ -119,7 +169,9 @@ public class TournamentView extends LinearLayout {
         if (null != tournament) {
             // init binder team <=> textviews semi final and set team name's
             for (int i = 0; i < tournament.getTeams().size(); i++) {
-                BinderTeamTextView binder = new BinderTeamTextView(tournament.getTeams().get(i), semiTextViews.get(i), semiTextViewsScore.get(i));
+                BinderTeamTextView binder = new BinderTeamTextView(tournament.getTeams().get(i),
+                        semiTextViews.get(i), semiTextViewsScore.get(i),
+                        semiCards.get(i));
                 // set teams names
                 semiTextViews.get(i).setText(tournament.getTeams().get(i).getName());
                 binderSemi.put(i, binder);
@@ -157,8 +209,11 @@ public class TournamentView extends LinearLayout {
     }
 
     private void setColorsBgForLoserAndWinner(BinderTeamTextView winner, BinderTeamTextView loser) {
-        winner.getTextViewName().setBackgroundColor(context.getResources().getColor(R.color.winner));
-        loser.getTextViewName().setBackgroundColor(context.getResources().getColor(R.color.loser));
+        winner.getCardView().setBackground(getResources().getDrawable(R.drawable.winner_green_bg));
+        winner.getTextViewName().setTypeface(null, Typeface.BOLD);
+
+        loser.getTextViewName().setTypeface(null, Typeface.NORMAL);
+        loser.getCardView().setBackground(getResources().getDrawable(R.drawable.loser_red_bg));
     }
 
     private Team updateScoreandGetWinner(BinderTeamTextView semi1, BinderTeamTextView semi2) {
@@ -197,7 +252,8 @@ public class TournamentView extends LinearLayout {
         public void afterTextChanged(Editable editable) {
             Team team = updateScoreandGetWinner(binderSemi.get(0), binderSemi.get(1));
             if (null != team) {
-                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard1Textview, finalCard1TextviewScore);
+                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard1Textview,
+                        finalCard1TextviewScore,finalCard1);
                 binderfinal.put(0, binderTeamTextView);
                 finalCard1Textview.setText(team.getName());
             }
@@ -219,7 +275,8 @@ public class TournamentView extends LinearLayout {
         public void afterTextChanged(Editable editable) {
             Team team = updateScoreandGetWinner(binderSemi.get(2), binderSemi.get(3));
             if (null != team) {
-                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard2Textview, finalCard2TextviewScore);
+                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team,
+                        finalCard2Textview, finalCard2TextviewScore,finalCard2);
                 binderfinal.put(1, binderTeamTextView);
                 finalCard2Textview.setText(team.getName());
             }

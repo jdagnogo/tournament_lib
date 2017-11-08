@@ -1,9 +1,9 @@
 package com.example.jdagnogo.mytournament.enums;
 
 public enum TournamentRound {
-    Semi(2),
-    Final(0),
-    Winner(1);
+    SemiA(2),
+    SemiB(0),
+    Final(1);
 
     private int round;
 

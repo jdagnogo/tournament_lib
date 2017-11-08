@@ -10,7 +10,6 @@ public class Team {
     public Team(String name) {
         this.name = name;
         hasBeenEliminated = false;
-        currentPosition = TournamentRound.Semi;
     }
 
     public String getName() {

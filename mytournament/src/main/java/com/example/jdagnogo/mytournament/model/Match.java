@@ -2,14 +2,14 @@ package com.example.jdagnogo.mytournament.model;
 
 import com.example.jdagnogo.mytournament.enums.TournamentRound;
 
-public class MatchResult {
+public class Match {
     private Team teamA;
     private Team teamB;
     private TournamentRound curentPosition;
     private int scoreA;
     private int scoreB;
 
-   private MatchResult(MatchResultBuilder builder){
+   private Match(MatchResultBuilder builder){
        this.teamA = builder.teamA;
        this.teamB = builder.teamB;
        this.curentPosition = builder.curentPosition;
@@ -24,8 +24,49 @@ public class MatchResult {
         }else if (scoreA == scoreB) {
             return null;
         }else {
+            teamA.setHasBeenEliminated(true);
             return teamB;
         }
+    }
+
+    public TournamentRound getCurentPosition() {
+        return curentPosition;
+    }
+
+    public Team getTeamA() {
+        return teamA;
+    }
+
+    public void setTeamA(Team teamA) {
+        this.teamA = teamA;
+    }
+
+    public Team getTeamB() {
+        return teamB;
+    }
+
+    public void setTeamB(Team teamB) {
+        this.teamB = teamB;
+    }
+
+    public void setCurentPosition(TournamentRound curentPosition) {
+        this.curentPosition = curentPosition;
+    }
+
+    public int getScoreA() {
+        return scoreA;
+    }
+
+    public void setScoreA(int scoreA) {
+        this.scoreA = scoreA;
+    }
+
+    public int getScoreB() {
+        return scoreB;
+    }
+
+    public void setScoreB(int scoreB) {
+        this.scoreB = scoreB;
     }
 
     public static class MatchResultBuilder {
@@ -38,11 +79,9 @@ public class MatchResult {
         public MatchResultBuilder(Team teamA, Team teamB) {
             this.teamA = teamA;
             this.teamB = teamB;
-            this.curentPosition = TournamentRound.Semi;
             scoreA = 0;
             scoreB = 0;
         }
-
         public MatchResultBuilder currentPosition(TournamentRound curentPosition) {
             this.curentPosition = curentPosition;
             return this;
@@ -55,9 +94,11 @@ public class MatchResult {
             this.scoreB = scoreB;
             return this;
         }
-        public MatchResult build(){
-            return new MatchResult(this);
+
+        public Match build(){
+            return new Match(this);
         }
+
 
     }
 }

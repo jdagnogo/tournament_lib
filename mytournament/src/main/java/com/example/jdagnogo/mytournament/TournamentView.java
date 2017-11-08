@@ -3,6 +3,7 @@ package com.example.jdagnogo.mytournament;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.jdagnogo.mytournament.anim.CustomAnim;
 import com.example.jdagnogo.mytournament.enums.TournamentRound;
 import com.example.jdagnogo.mytournament.model.BinderTeamTextView;
 import com.example.jdagnogo.mytournament.model.Match;
@@ -23,6 +25,8 @@ import com.example.jdagnogo.mytournament.model.Tournament;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import icepick.Icepick;
 
 
 public class TournamentView extends LinearLayout {
@@ -68,6 +72,14 @@ public class TournamentView extends LinearLayout {
         initViews();
         updateElementsAccordingToAttributs(context, attrs);
     }
+    @Override public Parcelable onSaveInstanceState() {
+        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+    }
+
+    @Override public void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+    }
+
 
     private void initViews() {
         //init view
@@ -186,6 +198,7 @@ public class TournamentView extends LinearLayout {
     public void setupLayout(Context context) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         rootView = inflater.inflate(R.layout.main_layout, this);
 
     }
@@ -213,6 +226,7 @@ public class TournamentView extends LinearLayout {
     private void setColorsBgForLoserAndWinner(BinderTeamTextView winner, BinderTeamTextView loser) {
         winner.getCardView().setBackground(getResources().getDrawable(R.drawable.winner_green_bg));
         winner.getTextViewName().setTypeface(null, Typeface.BOLD);
+
 
         loser.getTextViewName().setTypeface(null, Typeface.NORMAL);
         loser.getCardView().setBackground(getResources().getDrawable(R.drawable.loser_red_bg));
@@ -254,14 +268,18 @@ public class TournamentView extends LinearLayout {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            Team team = updateScoreandGetWinner(binderSemi.get(0), binderSemi.get(1), TournamentRound.SemiA);
-            if (null != team) {
-                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard1Textview,
-                        finalCard1TextviewScore, finalCard1);
-                binderfinal.put(0, binderTeamTextView);
-                finalCard1Textview.setText(team.getName());
+            if (null!=binderSemi){
+                Team team = updateScoreandGetWinner(binderSemi.get(0), binderSemi.get(1), TournamentRound.SemiA);
+                if (null != team) {
+                    BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard1Textview,
+                            finalCard1TextviewScore, finalCard1);
+                    binderfinal.put(0, binderTeamTextView);
+                    finalCard1Textview.setText(team.getName());
+                    CustomAnim.NextRoundAnim(finalCard1);
+                }
+                updateFinal();
             }
-            updateFinal();
+
         }
     };
     private TextWatcher watcherSemi2 = new TextWatcher() {
@@ -277,24 +295,30 @@ public class TournamentView extends LinearLayout {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            Team team = updateScoreandGetWinner(binderSemi.get(2), binderSemi.get(3), TournamentRound.SemiB);
-            if (null != team) {
-                BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team,
-                        finalCard2Textview, finalCard2TextviewScore, finalCard2);
-                binderfinal.put(1, binderTeamTextView);
-                finalCard2Textview.setText(team.getName());
+            if (null!=binderSemi) {
+                Team team = updateScoreandGetWinner(binderSemi.get(2), binderSemi.get(3), TournamentRound.SemiB);
+                if (null != team) {
+                    BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team,
+                            finalCard2Textview, finalCard2TextviewScore, finalCard2);
+                    binderfinal.put(1, binderTeamTextView);
+                    finalCard2Textview.setText(team.getName());
+                    CustomAnim.NextRoundAnim(finalCard2);
+                }
+                updateFinal();
             }
-            updateFinal();
         }
     };
 
     private void updateFinal() {
-        Team team = updateScoreandGetWinner(binderfinal.get(0), binderfinal.get(1), TournamentRound.Final);
-        if (null != team) {
-            winnerTextView.setText(team.getName());
-            winnerTextView.setBackgroundColor(context.getResources().getColor(R.color.winner));
+        if (null!=binderfinal) {
+            Team team = updateScoreandGetWinner(binderfinal.get(0), binderfinal.get(1), TournamentRound.Final);
+            if (null != team) {
+                winnerTextView.setText(team.getName());
+                winnerTextView.setBackgroundColor(context.getResources().getColor(R.color.winner));
+                CustomAnim.NextRoundAnim(winnerTextView);
+            }
+
         }
-        tournamentResult();
     }
 
     private TextWatcher watcherfinal = new TextWatcher() {
@@ -331,4 +355,11 @@ public class TournamentView extends LinearLayout {
         finalCard1TextviewScore.setText(String.valueOf(finalMatch.getScoreA()));
         finalCard2TextviewScore.setText(String.valueOf(finalMatch.getScoreB()));
     }
+
+    public void resetView(){
+      //TODO
+        this.invalidate();
+        this.refreshDrawableState();
+    }
+
 }

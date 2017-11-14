@@ -21,12 +21,15 @@ import com.example.jdagnogo.mytournament.model.BinderTeamTextView;
 import com.example.jdagnogo.mytournament.model.Match;
 import com.example.jdagnogo.mytournament.model.Team;
 import com.example.jdagnogo.mytournament.model.Tournament;
+import com.example.jdagnogo.mytournament.model.bundler.BinderTeamTextViewBundler;
+import com.example.jdagnogo.mytournament.model.bundler.TournamentBundler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import icepick.Icepick;
+import icepick.State;
 
 
 public class TournamentView extends LinearLayout {
@@ -54,15 +57,18 @@ public class TournamentView extends LinearLayout {
     /*
     beans
      */
-    private Tournament tournament;
+    @State(TournamentBundler.class)
+    Tournament tournament;
     private List<TextView> semiTextViews;
     private List<CardView> semiCards;
     private List<TextView> finalTextViews;
     private List<CardView> finalCards;
     private List<TextView> semiTextViewsScore;
     private List<TextView> finalTextViewsScore;
-    private HashMap<Integer, BinderTeamTextView> binderSemi;
-    private HashMap<Integer, BinderTeamTextView> binderfinal;
+
+    HashMap<Integer, BinderTeamTextView> binderSemi;
+
+    HashMap<Integer, BinderTeamTextView> binderfinal;
     private Context context;
 
     public TournamentView(Context context, @Nullable AttributeSet attrs) {
@@ -72,12 +78,17 @@ public class TournamentView extends LinearLayout {
         initViews();
         updateElementsAccordingToAttributs(context, attrs);
     }
-    @Override public Parcelable onSaveInstanceState() {
+
+    @Override
+    public Parcelable onSaveInstanceState() {
         return Icepick.saveInstanceState(this, super.onSaveInstanceState());
     }
 
-    @Override public void onRestoreInstanceState(Parcelable state) {
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+        int toto = 0;
+        startTournament();
     }
 
 
@@ -195,14 +206,6 @@ public class TournamentView extends LinearLayout {
     }
 
 
-    public void setupLayout(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        rootView = inflater.inflate(R.layout.main_layout, this);
-
-    }
-
     private void updateElementsAccordingToAttributs(Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs,
                 R.styleable.TournamentView, 0, 0);
@@ -268,7 +271,7 @@ public class TournamentView extends LinearLayout {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (null!=binderSemi){
+            if (null != binderSemi) {
                 Team team = updateScoreandGetWinner(binderSemi.get(0), binderSemi.get(1), TournamentRound.SemiA);
                 if (null != team) {
                     BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team, finalCard1Textview,
@@ -295,7 +298,7 @@ public class TournamentView extends LinearLayout {
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (null!=binderSemi) {
+            if (null != binderSemi) {
                 Team team = updateScoreandGetWinner(binderSemi.get(2), binderSemi.get(3), TournamentRound.SemiB);
                 if (null != team) {
                     BinderTeamTextView binderTeamTextView = new BinderTeamTextView(team,
@@ -310,7 +313,7 @@ public class TournamentView extends LinearLayout {
     };
 
     private void updateFinal() {
-        if (null!=binderfinal) {
+        if (null != binderfinal) {
             Team team = updateScoreandGetWinner(binderfinal.get(0), binderfinal.get(1), TournamentRound.Final);
             if (null != team) {
                 winnerTextView.setText(team.getName());
@@ -356,10 +359,11 @@ public class TournamentView extends LinearLayout {
         finalCard2TextviewScore.setText(String.valueOf(finalMatch.getScoreB()));
     }
 
-    public void resetView(){
-      //TODO
-        this.invalidate();
-        this.refreshDrawableState();
-    }
+    public void setupLayout(Context context) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
+        rootView = inflater.inflate(R.layout.main_layout, this);
+
+    }
 }

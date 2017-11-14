@@ -23,11 +23,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+    }
+
+    private void init() {
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.set_teams).setOnClickListener(this);
         findViewById(R.id.reset).setOnClickListener(this);
         findViewById(R.id.simulate).setOnClickListener(this);
+
         // Create all teams
         arsenal = new Team("Arsenal");
         real = new Team("Real Madrid");
@@ -43,8 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         tournamentView = (TournamentView) findViewById(R.id.tournament_view);
-
-
     }
 
     @Override
@@ -70,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 break;
             case R.id.reset:
-                tournamentView.resetView();
+                init();
                 break;
 
         }

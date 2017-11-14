@@ -1,15 +1,30 @@
 package com.example.jdagnogo.mytournament.model;
 
 import com.example.jdagnogo.mytournament.enums.TournamentRound;
+import com.example.jdagnogo.mytournament.model.bundler.MatchBundler;
+import com.example.jdagnogo.mytournament.model.bundler.TeamBundler;
+
+import org.parceler.Parcel;
 
 import java.util.HashMap;
 import java.util.List;
 
+import icepick.State;
+
+@Parcel
 public class Tournament {
+    @State(TeamBundler.class)
     List<Team> teams;
-    private Match semiAMatch;
-    private Match semiBMatch;
-    private Match finalMatch;
+    @State(MatchBundler.class)
+    Match semiAMatch;
+    @State(MatchBundler.class)
+    Match semiBMatch;
+    @State(MatchBundler.class)
+    Match finalMatch;
+
+    public Tournament() {
+
+    }
 
     public Tournament(TournamentBuilder builder) {
         this.teams = builder.teams;

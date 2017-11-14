@@ -2,6 +2,9 @@ package com.example.jdagnogo.mytournament.model;
 
 import com.example.jdagnogo.mytournament.enums.TournamentRound;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Team {
     private String name;
     private TournamentRound currentPosition;
@@ -10,6 +13,10 @@ public class Team {
     public Team(String name) {
         this.name = name;
         hasBeenEliminated = false;
+    }
+
+    public Team() {
+
     }
 
     public String getName() {

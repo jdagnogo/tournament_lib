@@ -6,17 +6,32 @@ Feel free to send me suggestion or amelioration  : jdagnogo11@gmail.com
 -----------------------------------------------------------------------------------------------------------------------------
 
 # Presentation : 
+
+ <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/logo.png" width="300" style=" float : left;">
+ 
 This application allow you to :
   * create a tournament a view
   * get all result
   
- <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/logo" width="300" style=" float : left;">
+
 # Screenshots : 
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-43-32.png" width="300" style=" float : left;">
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-43-47.png" width="300" style=" float : left;">
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-44-26.png" width="300" style=" float : left;">
 
 -----------------------------------------------------------------------------------------------------------------------------
+# How to install :
+
+```
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+compile 'com.github.jdagnogo:tournament_lib:1.0'
+```
 
 # How to use :
 
@@ -58,3 +73,9 @@ Or if you alreayd have all result you can create all games and then simulate the
                 //use simulate to have the display
                 tournamentView.simulate();
 
+				
+# libs used:
+
+-IcePick
+-Butterknife
+-zoomlayout

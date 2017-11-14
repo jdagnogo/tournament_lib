@@ -15,23 +15,38 @@ This application allow you to :
   
 
 # Screenshots : 
+
+init view
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-43-32.png" width="300" style=" float : left;">
+
+You will have a nice display and you can have all result programmatically.
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-43-47.png" width="300" style=" float : left;">
+
+You can change score with the EditText and all result will be adjusted.
+
+<img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-16-19-21.png" width="300" style=" float : left;">
+
+You can zoom
+
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-44-26.png" width="300" style=" float : left;">
+
+(Yes i am an Arsenal fan ^^ COYG !)
 
 -----------------------------------------------------------------------------------------------------------------------------
 # How to install :
 
 ```
-allprojects {
-		repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
-	}
-```
-compile 'com.github.jdagnogo:tournament_lib:1.0'
-```
+		allprojects {
+						repositories {
+							...
+							maven { url 'https://jitpack.io' }
+						}
+					}
+
+					
+		compile 'com.github.jdagnogo:tournament_lib:1.0'
+
+		
 
 # How to use :
 

@@ -17,9 +17,11 @@ This application allow you to :
 # Screenshots : 
 
 init view
+
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-43-32.png" width="300" style=" float : left;">
 
 You will have a nice display and you can have all result programmatically.
+
 <img src="https://github.com/jdagnogo/tournament_lib/blob/master/screenshots/Screenshot_2017-11-14-15-43-47.png" width="300" style=" float : left;">
 
 You can change score with the EditText and all result will be adjusted.

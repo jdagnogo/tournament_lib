@@ -47,8 +47,7 @@ You can zoom
 
 					
 		compile 'com.github.jdagnogo:tournament_lib:1.0'
-
-		
+```
 
 # How to use :
 
@@ -90,9 +89,10 @@ Or if you alreayd have all result you can create all games and then simulate the
                 //use simulate to have the display
                 tournamentView.simulate();
 
-				
+```				
 # libs used:
-
+```
 -IcePick
 -Butterknife
 -zoomlayout
+```
